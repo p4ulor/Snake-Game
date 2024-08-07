@@ -1,0 +1,241 @@
+@startuml
+hide empty members
+
+namespace src{
+namespace isel.poo.snake.ctrl{
+Snake *- Updater
+Snake +-- Updater
+Updater ..|> isel.poo.snake.model.Observer
+Updater ..|> isel.poo.snake.model.Listener
+isel.poo.snake.model.Game <--* Snake :-model
+isel.poo.snake.model.Level <--* Snake :    -level
+
+}
+namespace isel.poo.snake.model{
+interface Listener{
+scoreUpdated()
+}
+interface Observer{
+cellUpdated()
+cellCreated()
+cellRemoved()
+cellMoved()
+applesUpdated()
+}
+isel.poo.snake.ctrl.Snake ..|> Listener
+Game +-- Listener :  ....................
+Game ..> Loader : uses
+Loader ..> Level : create
+Level +-- Observer
+Level *-- Cell
+Level -- Game
+
+Cell <|-- AppleCell
+Cell <|-- EmptyCell
+Cell <|-- HeadCell
+Cell <|-- ObstacleCell
+Cell <|-- BodyCell
+Cell <|-- NPCHeadCell
+
+Dir <--* isel.poo.snake.ctrl.Snake : play()
+Dir -- BodyCell : getters
+Dir -- Cell : getters
+Dir -- Level : Dir.UP
+Dir -- NPCHeadCell : Dir.values(), Dir.UP
+
+Position *-- Level : set limitL e limitC
+
+class NPCHeadCell{
+-ID
+-dead
+-LinkedList<BodyCell> tail
+-numberBodyToAdd
+-stepsUntilPenalty
+-nSteps
+NPCHeadCell()
+checkPenalty(), isPenalty()
+updateBody()
+moveHead(), moveBody()
+createNewBody(), removeBody()
+differentPath()
+getID()
+@Overrides()
+}
+
+
+class HeadCell{
+-ID
+-dead
+-LinkedList<BodyCell> tail
+-numberBodyToAdd
+-stepsUntilPenalty
+-nSteps()
+HeadCell()
+updateBody()
+createNewBody()
+removeBody()
+moveBody()
+moveHead()
+checkPenalty()
+isPenalty()
+getTailSize()
+@Overrides()
+}
+
+class ObstacleCell{
+-ID
+ObstacleCell()
+@Overrides()
+}
+
+class EmptyCell{
+@Overrides()
+}
+
+class AppleCell{
+-ID
+AppleCell()
+newRandPosition
+@Overrides()
+}
+
+class BodyCell{
+-ID
++head
+BodyCell()
+@Overrides()
+}
+
+enum Dir{
+~DOWN, LEFT, RIGTH, UP
+-dLine,dCol
+Dir()
+get()
+getDline(), getDcol()
+}
+
+class Position{
+{static} ~ limitL, limitC
+-lin, col
+{static} normalizeValue()
+Position()
+move(), normalize()
+getLin(), getCol
+getNextPosition()
+}
+
+abstract class Cell {
+  ~Dir, Level, Position
+    {abstract} init()
+    {abstract} getIsMovable()
+    {abstract} isKiller()
+    Cell()
+    isDead()
+    setDead()
+    step()
+    getId()
+    collideWith()
+    updateAfterCollide()
+    {static} newInstance()
+}
+
+class Level {
+    -Level, nApples, Cell[][] arena,
+    -Observer, Cell snake, Game game
+    -LinkedList<Cell> movable
+    ~applesEaten, applesInArena
+
+    Level()
+    init()
+    getHeight(), getWidth()
+    getNumber() ,getRemainingApples()
+    getCell(), setObserver()
+    isFinished(), putCell()
+    snakeIsDead(), setSnakeDirection
+    moveCell(), step()
+    putCell(), removeCell()
+    updateApples(), setSnake();
+
+}
+}
+
+namespace isel.poo.console{
+Window <--* isel.poo.snake.ctrl.Snake
+Window ..> View : display
+View <|-- FieldView
+View <|-- ParentView
+ParentView *-- View
+    namespace tile{
+    TilePanel o-- Tile : -tiles
+    isel.poo.console.View <|-- Tile
+    TilePanel <--* isel.poo.snake.ctrl.Snake
+    isel.poo.console.ParentView <|-- TilePanel
+    }
+}
+
+namespace isel.poo.snake.view{
+    CellTile --> isel.poo.snake.model.Cell : cell
+    class CellTile{
+        {static} + SIDE
+        {static} tileOf()
+    }
+    CellTile <|-- AppleTile
+    CellTile <|-- BodyTile
+    CellTile <|-- EmptyTile
+    CellTile <|-- HeadTile
+    CellTile <|-- ObstacleTile
+    CellTile <|-- NPCHeadTile
+
+
+    class NPCHeadTile{
+    -cell
+    NPCHeadTile()
+    @Override paint()
+    }
+    class StatusPanel{
+        {static} + WIDTH
+        -windoWidth, number
+        -remainingApples, score
+        - FieldView points, apples, level
+
+        StatusPanel()
+        setLevel()
+        setApples()
+        setScore()
+        setRemainingApples()
+    }
+    StatusPanel <--* isel.poo.snake.ctrl.Snake
+    isel.poo.console.ParentView <|-- StatusPanel
+    StatusPanel *-- isel.poo.console.FieldView : 3(Apples, Level e Score)
+
+    class AppleTile{
+    -cell
+    -level
+    AppleTile()
+    @Override paint()
+    }
+
+    class BodyTile{
+    -cell
+    BodyTile()
+    @Override paint()
+    }
+
+    class EmptyTile{
+    EmptyTile()
+    @Override paint()
+    }
+
+    class HeadTile{
+    -cell
+    HeadTile()
+    @Override paint()
+    }
+
+    class ObstacleTile{
+    ObstacleTile()
+    @Override paint()
+    }
+}
+
+@enduml

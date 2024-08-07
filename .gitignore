@@ -1,0 +1,13 @@
+.idea
+## To include the config to build the jar artifact
+!.idea/artifacts/Snake_Game_Artifact_jar.xml
+!.idea/artifacts/Snake_Game_Artifact_Final.xml
+
+## build folder used by intellij
+out/
+
+## generated file that includes the full paths of the .java files used for manually compile
+sources.txt
+
+## the folder specified to have the manually compiled classes and jars
+build

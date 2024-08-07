@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact name="Snake-Game-Artifact-Final">
+    <output-path>$PROJECT_DIR$/out/artifacts/Snake_Game_Artifact_Final</output-path>
+    <root id="root">
+      <element id="file-copy" path="$PROJECT_DIR$/levels.txt" />
+      <element id="artifact" artifact-name="Snake-Game-Artifact:jar" />
+    </root>
+  </artifact>
+</component>

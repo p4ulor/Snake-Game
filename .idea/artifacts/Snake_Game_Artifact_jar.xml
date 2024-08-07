@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Snake-Game-Artifact:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Snake_Game_Artifact_jar</output-path>
+    <root id="archive" name="Snake-Game-Artifact.jar">
+      <element id="module-output" name="Snake-Game" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/ConsolePG.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

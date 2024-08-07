@@ -1,0 +1,1 @@
+This package contains an example on how to use the ConsolePG.jar library
