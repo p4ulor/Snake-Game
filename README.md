@@ -2,6 +2,7 @@
 - Old project with no build automation tool (like Gradle)
 - The `ConsolePG.jar` is the library that was provided to  easily draw content to the screen
 - In IntelliJ, go to Project Structure -> Libraries -> Add the library `ConsolePG.jar`
+- The .idea only has the artifacts and run configurations
 ## Preview
 <img src="preview.png" style="max-width: 400px"></img>
 
